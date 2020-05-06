@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Bookflix.Models;
+using Microsoft.EntityFrameworkCore;
+using Bookflix.Data;
 
 namespace Bookflix.Controllers
 {
