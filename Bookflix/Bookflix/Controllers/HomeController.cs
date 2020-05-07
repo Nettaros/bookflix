@@ -27,10 +27,6 @@ namespace Bookflix.Controllers
 
         public IActionResult Privacy()
         {
-            var db = new BookflixContext();
-            var l1 = db.Libros.First();
-            db.Libros.Remove(l1);
-            db.SaveChanges();
             return View();
         }
 
