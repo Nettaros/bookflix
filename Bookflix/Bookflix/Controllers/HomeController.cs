@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Bookflix.Models;
-using Microsoft.EntityFrameworkCore;
 using Bookflix.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bookflix.Controllers
 {
@@ -27,6 +27,10 @@ namespace Bookflix.Controllers
 
         public IActionResult Privacy()
         {
+            var db = new BookflixContext();
+            var l1 = db.Libros.First();
+            db.Libros.Remove(l1);
+            db.SaveChanges();
             return View();
         }
 

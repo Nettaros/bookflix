@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Bookflix.Migrations
 {
-    public partial class Inicial : Migration
+    public partial class InitialDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -23,8 +23,7 @@ namespace Bookflix.Migrations
                 name: "Libros",
                 columns: table => new
                 {
-                    ISBN = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ISBN = table.Column<int>(nullable: false),
                     Nombre = table.Column<string>(nullable: false),
                     Editorial = table.Column<string>(nullable: false),
                     Autor = table.Column<string>(nullable: false),
@@ -68,8 +67,7 @@ namespace Bookflix.Migrations
                     Nombre = table.Column<string>(nullable: false),
                     Dato = table.Column<byte[]>(nullable: false),
                     FechaPublicacion = table.Column<DateTime>(nullable: false),
-                    LibroISNB = table.Column<int>(nullable: false),
-                    LibroISBN = table.Column<int>(nullable: true)
+                    LibroISBN = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -79,7 +77,7 @@ namespace Bookflix.Migrations
                         column: x => x.LibroISBN,
                         principalTable: "Libros",
                         principalColumn: "ISBN",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

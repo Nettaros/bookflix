@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Bookflix.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.SqlServer;
+using Microsoft.EntityFrameworkCore.Design;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Bookflix.Data
 {
@@ -20,5 +22,6 @@ namespace Bookflix.Data
         {
             options.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=BookflixDatabase;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
         }
+
     }
 }

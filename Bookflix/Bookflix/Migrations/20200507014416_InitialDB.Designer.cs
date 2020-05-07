@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bookflix.Migrations
 {
     [DbContext(typeof(BookflixContext))]
-    [Migration("20200505015349_ISBNFixed")]
-    partial class ISBNFixed
+    [Migration("20200507014416_InitialDB")]
+    partial class InitialDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -85,9 +85,7 @@ namespace Bookflix.Migrations
             modelBuilder.Entity("Bookflix.Models.Libro", b =>
                 {
                     b.Property<int>("ISBN")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<string>("Autor")
                         .IsRequired()

@@ -4,16 +4,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Bookflix.Models
 {
     public class Libro
     {
+        
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Key]
+        public int ISBN { get; set; }
+
         [Required]
         public String Nombre { get; set; }
 
-        [Key]
-        public int ISBN { get; set; }
+        
         [Required]
         public String Editorial { get; set; }
         [Required]
