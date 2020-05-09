@@ -25,6 +25,7 @@ namespace Bookflix.Data
         public DbSet<Genero> Generos { get; set; }
         public DbSet<Editorial> Editoriales { get; set; }
         public DbSet<Autor> Autores { get; set; }
+        public DbSet<Novedad> Novedades { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
