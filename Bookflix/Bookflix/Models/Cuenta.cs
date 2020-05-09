@@ -11,8 +11,9 @@ namespace Bookflix.Models
     {
         [Key]
         [Column(Order = 1)]
-        public String NombreUsuario { get; set; }
+        public String Email { get; set; }
         [Required]
         public String Contraseña { get; set; }
+
     }
 }

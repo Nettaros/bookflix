@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace Bookflix.Models
 {
@@ -14,19 +15,18 @@ namespace Bookflix.Models
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Key]
         public int ISBN { get; set; }
-
         [Required]
         public String Nombre { get; set; }
-
-        
+        [Required]    
+        public Editorial Editorial { get; set; }
         [Required]
-        public String Editorial { get; set; }
-        [Required]
-        public String Autor { get; set; }
+        public Autor Autor { get; set; }
         [Required]
         public DateTime FechaPublicacion { get; set; }
         [Required]
         public String Sinopsis { get; set; }
+        [Required]
+        public Genero Genero { get; set; }
 #nullable enable
         public byte[]? Imagen { get; set; }
         public List<Contenido>? Contenidos { get; set; }

@@ -4,14 +4,16 @@ using Bookflix.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Bookflix.Migrations
 {
     [DbContext(typeof(BookflixContext))]
-    partial class BookflixContextModelSnapshot : ModelSnapshot
+    [Migration("20200509041148_InitialDB")]
+    partial class InitialDB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,7 +74,7 @@ namespace Bookflix.Migrations
 
             modelBuilder.Entity("Bookflix.Models.Cuenta", b =>
                 {
-                    b.Property<string>("Email")
+                    b.Property<string>("NombreUsuario")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Contraseña")
@@ -83,7 +85,7 @@ namespace Bookflix.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Email");
+                    b.HasKey("NombreUsuario");
 
                     b.ToTable("Cuentas");
 
@@ -291,8 +293,7 @@ namespace Bookflix.Migrations
                 {
                     b.HasOne("Bookflix.Models.Subscriptor", "Subscriptor")
                         .WithMany("Perfiles")
-                        .HasForeignKey("SubscriptorNombreUsuario")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("SubscriptorNombreUsuario");
                 });
 
             modelBuilder.Entity("Bookflix.Models.Reclamo", b =>
@@ -307,8 +308,7 @@ namespace Bookflix.Migrations
                 {
                     b.HasOne("Bookflix.Models.Libro", null)
                         .WithMany("Reseñas")
-                        .HasForeignKey("LibroISBN")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("LibroISBN");
 
                     b.HasOne("Bookflix.Models.Perfil", "Creador")
                         .WithMany()
@@ -320,8 +320,7 @@ namespace Bookflix.Migrations
                 {
                     b.HasOne("Bookflix.Models.Subscriptor", "Subscriptor")
                         .WithOne("Tarjeta")
-                        .HasForeignKey("Bookflix.Models.Tarjeta", "SubscriptorNombreUsuario")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("Bookflix.Models.Tarjeta", "SubscriptorNombreUsuario");
                 });
 
             modelBuilder.Entity("Bookflix.Models.Subscriptor", b =>

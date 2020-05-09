@@ -15,9 +15,8 @@ namespace Bookflix.Models
         public DateTime FechaVencimiento { get; set; }
         [Required]
         public byte CodigoSeguridad { get; set; }
-        
-        public String SubscriptorNombreUsuario { get; set; }
 
+        public String SubscriptorNombreUsuario { get; set; }
         [ForeignKey("SubscriptorNombreUsuario")]
         public Subscriptor Subscriptor { get; set; }
     }

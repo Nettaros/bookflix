@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Bookflix.Models
 {
-    public class Comentario
+    public abstract class Comentario
     {
         public String Texto { get; set; }
         [Key]

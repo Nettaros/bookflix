@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bookflix.Migrations
 {
     [DbContext(typeof(BookflixContext))]
-    [Migration("20200507014416_InitialDB")]
-    partial class InitialDB
+    [Migration("20200509042930_CuentaTieneEmail")]
+    partial class CuentaTieneEmail
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,16 @@ namespace Bookflix.Migrations
                 .HasAnnotation("ProductVersion", "3.1.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("Bookflix.Models.Autor", b =>
+                {
+                    b.Property<string>("Nombre")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Nombre");
+
+                    b.ToTable("Autores");
+                });
 
             modelBuilder.Entity("Bookflix.Models.Categoria", b =>
                 {
@@ -64,7 +74,7 @@ namespace Bookflix.Migrations
 
             modelBuilder.Entity("Bookflix.Models.Cuenta", b =>
                 {
-                    b.Property<string>("NombreUsuario")
+                    b.Property<string>("Email")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Contraseña")
@@ -75,11 +85,31 @@ namespace Bookflix.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("NombreUsuario");
+                    b.HasKey("Email");
 
                     b.ToTable("Cuentas");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Cuenta");
+                });
+
+            modelBuilder.Entity("Bookflix.Models.Editorial", b =>
+                {
+                    b.Property<string>("Nombre")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Nombre");
+
+                    b.ToTable("Editoriales");
+                });
+
+            modelBuilder.Entity("Bookflix.Models.Genero", b =>
+                {
+                    b.Property<string>("Nombre")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Nombre");
+
+                    b.ToTable("Generos");
                 });
 
             modelBuilder.Entity("Bookflix.Models.Libro", b =>
@@ -87,16 +117,20 @@ namespace Bookflix.Migrations
                     b.Property<int>("ISBN")
                         .HasColumnType("int");
 
-                    b.Property<string>("Autor")
+                    b.Property<string>("AutorNombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Editorial")
+                    b.Property<string>("EditorialNombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("FechaPublicacion")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("GeneroNombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<byte[]>("Imagen")
                         .HasColumnType("varbinary(max)");
@@ -110,6 +144,12 @@ namespace Bookflix.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ISBN");
+
+                    b.HasIndex("AutorNombre");
+
+                    b.HasIndex("EditorialNombre");
+
+                    b.HasIndex("GeneroNombre");
 
                     b.ToTable("Libros");
                 });
@@ -224,7 +264,28 @@ namespace Bookflix.Migrations
                     b.HasOne("Bookflix.Models.Libro", "Libro")
                         .WithMany("Contenidos")
                         .HasForeignKey("LibroISBN")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Bookflix.Models.Libro", b =>
+                {
+                    b.HasOne("Bookflix.Models.Autor", "Autor")
+                        .WithMany()
+                        .HasForeignKey("AutorNombre")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Bookflix.Models.Editorial", "Editorial")
+                        .WithMany()
+                        .HasForeignKey("EditorialNombre")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Bookflix.Models.Genero", "Genero")
+                        .WithMany()
+                        .HasForeignKey("GeneroNombre")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -232,39 +293,45 @@ namespace Bookflix.Migrations
                 {
                     b.HasOne("Bookflix.Models.Subscriptor", "Subscriptor")
                         .WithMany("Perfiles")
-                        .HasForeignKey("SubscriptorNombreUsuario");
+                        .HasForeignKey("SubscriptorNombreUsuario")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Bookflix.Models.Reclamo", b =>
                 {
                     b.HasOne("Bookflix.Models.Perfil", "Creador")
                         .WithMany()
-                        .HasForeignKey("PerfilNombre");
+                        .HasForeignKey("PerfilNombre")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Bookflix.Models.Reseña", b =>
                 {
                     b.HasOne("Bookflix.Models.Libro", null)
                         .WithMany("Reseñas")
-                        .HasForeignKey("LibroISBN");
+                        .HasForeignKey("LibroISBN")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Bookflix.Models.Perfil", "Creador")
                         .WithMany()
-                        .HasForeignKey("PerfilNombre");
+                        .HasForeignKey("PerfilNombre")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Bookflix.Models.Tarjeta", b =>
                 {
                     b.HasOne("Bookflix.Models.Subscriptor", "Subscriptor")
                         .WithOne("Tarjeta")
-                        .HasForeignKey("Bookflix.Models.Tarjeta", "SubscriptorNombreUsuario");
+                        .HasForeignKey("Bookflix.Models.Tarjeta", "SubscriptorNombreUsuario")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Bookflix.Models.Subscriptor", b =>
                 {
                     b.HasOne("Bookflix.Models.Categoria", "Categoria")
                         .WithMany()
-                        .HasForeignKey("CategoriaNombre");
+                        .HasForeignKey("CategoriaNombre")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618
         }
