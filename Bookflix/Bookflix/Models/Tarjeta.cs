@@ -12,6 +12,7 @@ namespace Bookflix.Models
         [Key]
         public String Numero { get; set; }
         [Required]
+        [DataType(DataType.Date)]
         public DateTime FechaVencimiento { get; set; }
         [Required]
         public byte CodigoSeguridad { get; set; }

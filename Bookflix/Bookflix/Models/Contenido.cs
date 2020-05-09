@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.CompilerServices;
 
 namespace Bookflix.Models
 {
@@ -18,6 +19,7 @@ namespace Bookflix.Models
         public byte[] Dato { get; set; }
 
         [Required]
+        [DataType(DataType.Date)]
         public DateTime FechaPublicacion { get; set; }
 
         [Column(Order = 2)]

@@ -11,8 +11,10 @@ namespace Bookflix.Models
     {
         [Key]
         [Column(Order = 1)]
+        [DataType(DataType.EmailAddress)]
         public String Email { get; set; }
         [Required]
+        [DataType(DataType.Password)]
         public String Contraseña { get; set; }
 
     }

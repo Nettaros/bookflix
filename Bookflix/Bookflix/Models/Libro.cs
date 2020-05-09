@@ -16,12 +16,13 @@ namespace Bookflix.Models
         [Key]
         public int ISBN { get; set; }
         [Required]
-        public String Nombre { get; set; }
+        public String Titulo { get; set; }
         [Required]    
         public Editorial Editorial { get; set; }
         [Required]
         public Autor Autor { get; set; }
         [Required]
+        [DataType(DataType.Date)]
         public DateTime FechaPublicacion { get; set; }
         [Required]
         public String Sinopsis { get; set; }
