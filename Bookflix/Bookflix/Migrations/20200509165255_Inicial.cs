@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Bookflix.Migrations
 {
-    public partial class InitialDB : Migration
+    public partial class Inicial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -56,7 +56,7 @@ namespace Bookflix.Migrations
                 name: "Cuentas",
                 columns: table => new
                 {
-                    NombreUsuario = table.Column<string>(nullable: false),
+                    Email = table.Column<string>(nullable: false),
                     Contraseña = table.Column<string>(nullable: false),
                     Discriminator = table.Column<string>(nullable: false),
                     NombreCompleto = table.Column<string>(nullable: true),
@@ -65,7 +65,7 @@ namespace Bookflix.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Cuentas", x => x.NombreUsuario);
+                    table.PrimaryKey("PK_Cuentas", x => x.Email);
                     table.ForeignKey(
                         name: "FK_Cuentas_Categoria_CategoriaNombre",
                         column: x => x.CategoriaNombre,
@@ -115,18 +115,18 @@ namespace Bookflix.Migrations
                 columns: table => new
                 {
                     Nombre = table.Column<string>(nullable: false),
-                    SubscriptorNombreUsuario = table.Column<string>(nullable: true),
+                    SubscriptorId = table.Column<string>(nullable: true),
                     Imagen = table.Column<byte[]>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Perfil", x => x.Nombre);
                     table.ForeignKey(
-                        name: "FK_Perfil_Cuentas_SubscriptorNombreUsuario",
-                        column: x => x.SubscriptorNombreUsuario,
+                        name: "FK_Perfil_Cuentas_SubscriptorId",
+                        column: x => x.SubscriptorId,
                         principalTable: "Cuentas",
-                        principalColumn: "NombreUsuario",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Email",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -136,17 +136,17 @@ namespace Bookflix.Migrations
                     Numero = table.Column<string>(nullable: false),
                     FechaVencimiento = table.Column<DateTime>(nullable: false),
                     CodigoSeguridad = table.Column<byte>(nullable: false),
-                    SubscriptorNombreUsuario = table.Column<string>(nullable: true)
+                    SubscriptorId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tarjeta", x => x.Numero);
                     table.ForeignKey(
-                        name: "FK_Tarjeta_Cuentas_SubscriptorNombreUsuario",
-                        column: x => x.SubscriptorNombreUsuario,
+                        name: "FK_Tarjeta_Cuentas_SubscriptorId",
+                        column: x => x.SubscriptorId,
                         principalTable: "Cuentas",
-                        principalColumn: "NombreUsuario",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Email",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -158,17 +158,43 @@ namespace Bookflix.Migrations
                     Nombre = table.Column<string>(nullable: false),
                     Dato = table.Column<byte[]>(nullable: false),
                     FechaPublicacion = table.Column<DateTime>(nullable: false),
-                    LibroISBN = table.Column<int>(nullable: false)
+                    LibroId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Contenido", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Contenido_Libros_LibroISBN",
+                        name: "FK_Contenido_Libros_LibroId",
+                        column: x => x.LibroId,
+                        principalTable: "Libros",
+                        principalColumn: "ISBN",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PerfilLibros",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    LibroISBN = table.Column<int>(nullable: false),
+                    PerfilId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PerfilLibros", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PerfilLibros_Libros_LibroISBN",
                         column: x => x.LibroISBN,
                         principalTable: "Libros",
                         principalColumn: "ISBN",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_PerfilLibros_Perfil_PerfilId",
+                        column: x => x.PerfilId,
+                        principalTable: "Perfil",
+                        principalColumn: "Nombre",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -177,14 +203,14 @@ namespace Bookflix.Migrations
                 {
                     FechaCreacion = table.Column<DateTime>(nullable: false),
                     Texto = table.Column<string>(nullable: true),
-                    PerfilNombre = table.Column<string>(nullable: true)
+                    PerfilId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Reclamos", x => x.FechaCreacion);
                     table.ForeignKey(
-                        name: "FK_Reclamos_Perfil_PerfilNombre",
-                        column: x => x.PerfilNombre,
+                        name: "FK_Reclamos_Perfil_PerfilId",
+                        column: x => x.PerfilId,
                         principalTable: "Perfil",
                         principalColumn: "Nombre",
                         onDelete: ReferentialAction.Restrict);
@@ -196,31 +222,31 @@ namespace Bookflix.Migrations
                 {
                     FechaCreacion = table.Column<DateTime>(nullable: false),
                     Texto = table.Column<string>(nullable: true),
-                    PerfilNombre = table.Column<string>(nullable: true),
+                    PerfilId = table.Column<string>(nullable: true),
                     Puntaje = table.Column<byte>(nullable: false),
-                    LibroISBN = table.Column<int>(nullable: true)
+                    LibroId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Reseña", x => x.FechaCreacion);
                     table.ForeignKey(
-                        name: "FK_Reseña_Libros_LibroISBN",
-                        column: x => x.LibroISBN,
+                        name: "FK_Reseña_Libros_LibroId",
+                        column: x => x.LibroId,
                         principalTable: "Libros",
                         principalColumn: "ISBN",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Reseña_Perfil_PerfilNombre",
-                        column: x => x.PerfilNombre,
+                        name: "FK_Reseña_Perfil_PerfilId",
+                        column: x => x.PerfilId,
                         principalTable: "Perfil",
                         principalColumn: "Nombre",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Contenido_LibroISBN",
+                name: "IX_Contenido_LibroId",
                 table: "Contenido",
-                column: "LibroISBN");
+                column: "LibroId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cuentas_CategoriaNombre",
@@ -243,37 +269,50 @@ namespace Bookflix.Migrations
                 column: "GeneroNombre");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Perfil_SubscriptorNombreUsuario",
+                name: "IX_Perfil_SubscriptorId",
                 table: "Perfil",
-                column: "SubscriptorNombreUsuario");
+                column: "SubscriptorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reclamos_PerfilNombre",
-                table: "Reclamos",
-                column: "PerfilNombre");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Reseña_LibroISBN",
-                table: "Reseña",
+                name: "IX_PerfilLibros_LibroISBN",
+                table: "PerfilLibros",
                 column: "LibroISBN");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reseña_PerfilNombre",
-                table: "Reseña",
-                column: "PerfilNombre");
+                name: "IX_PerfilLibros_PerfilId",
+                table: "PerfilLibros",
+                column: "PerfilId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tarjeta_SubscriptorNombreUsuario",
+                name: "IX_Reclamos_PerfilId",
+                table: "Reclamos",
+                column: "PerfilId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reseña_LibroId",
+                table: "Reseña",
+                column: "LibroId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reseña_PerfilId",
+                table: "Reseña",
+                column: "PerfilId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tarjeta_SubscriptorId",
                 table: "Tarjeta",
-                column: "SubscriptorNombreUsuario",
+                column: "SubscriptorId",
                 unique: true,
-                filter: "[SubscriptorNombreUsuario] IS NOT NULL");
+                filter: "[SubscriptorId] IS NOT NULL");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "Contenido");
+
+            migrationBuilder.DropTable(
+                name: "PerfilLibros");
 
             migrationBuilder.DropTable(
                 name: "Reclamos");

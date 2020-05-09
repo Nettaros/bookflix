@@ -20,11 +20,10 @@ namespace Bookflix.Models
         [Required]
         public DateTime FechaPublicacion { get; set; }
 
-
-        public int LibroISBN { get; set; }
-
-        [ForeignKey("LibroISBN")]
         [Column(Order = 2)]
+        public int LibroId { get; set; }
+
+      
         public Libro Libro { get; set; }
 
     }

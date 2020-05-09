@@ -7,5 +7,6 @@ namespace Bookflix.Models
 {
     public class Genero : DatoDeLibro
     {
+        
     }
 }

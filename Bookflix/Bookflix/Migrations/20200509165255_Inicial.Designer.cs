@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bookflix.Migrations
 {
     [DbContext(typeof(BookflixContext))]
-    [Migration("20200509042930_CuentaTieneEmail")]
-    partial class CuentaTieneEmail
+    [Migration("20200509165255_Inicial")]
+    partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -58,7 +58,7 @@ namespace Bookflix.Migrations
                     b.Property<DateTime>("FechaPublicacion")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("LibroISBN")
+                    b.Property<int>("LibroId")
                         .HasColumnType("int");
 
                     b.Property<string>("Nombre")
@@ -67,7 +67,7 @@ namespace Bookflix.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LibroISBN");
+                    b.HasIndex("LibroId");
 
                     b.ToTable("Contenido");
                 });
@@ -162,14 +162,36 @@ namespace Bookflix.Migrations
                     b.Property<byte[]>("Imagen")
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<string>("SubscriptorNombreUsuario")
+                    b.Property<string>("SubscriptorId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Nombre");
 
-                    b.HasIndex("SubscriptorNombreUsuario");
+                    b.HasIndex("SubscriptorId");
 
                     b.ToTable("Perfil");
+                });
+
+            modelBuilder.Entity("Bookflix.Models.PerfilLibros", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("LibroISBN")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PerfilId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LibroISBN");
+
+                    b.HasIndex("PerfilId");
+
+                    b.ToTable("PerfilLibros");
                 });
 
             modelBuilder.Entity("Bookflix.Models.Reclamo", b =>
@@ -177,7 +199,7 @@ namespace Bookflix.Migrations
                     b.Property<DateTime>("FechaCreacion")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("PerfilNombre")
+                    b.Property<string>("PerfilId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Texto")
@@ -185,7 +207,7 @@ namespace Bookflix.Migrations
 
                     b.HasKey("FechaCreacion");
 
-                    b.HasIndex("PerfilNombre");
+                    b.HasIndex("PerfilId");
 
                     b.ToTable("Reclamos");
                 });
@@ -195,10 +217,10 @@ namespace Bookflix.Migrations
                     b.Property<DateTime>("FechaCreacion")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("LibroISBN")
+                    b.Property<int>("LibroId")
                         .HasColumnType("int");
 
-                    b.Property<string>("PerfilNombre")
+                    b.Property<string>("PerfilId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<byte>("Puntaje")
@@ -209,9 +231,9 @@ namespace Bookflix.Migrations
 
                     b.HasKey("FechaCreacion");
 
-                    b.HasIndex("LibroISBN");
+                    b.HasIndex("LibroId");
 
-                    b.HasIndex("PerfilNombre");
+                    b.HasIndex("PerfilId");
 
                     b.ToTable("Reseña");
                 });
@@ -227,14 +249,14 @@ namespace Bookflix.Migrations
                     b.Property<DateTime>("FechaVencimiento")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("SubscriptorNombreUsuario")
+                    b.Property<string>("SubscriptorId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Numero");
 
-                    b.HasIndex("SubscriptorNombreUsuario")
+                    b.HasIndex("SubscriptorId")
                         .IsUnique()
-                        .HasFilter("[SubscriptorNombreUsuario] IS NOT NULL");
+                        .HasFilter("[SubscriptorId] IS NOT NULL");
 
                     b.ToTable("Tarjeta");
                 });
@@ -263,7 +285,7 @@ namespace Bookflix.Migrations
                 {
                     b.HasOne("Bookflix.Models.Libro", "Libro")
                         .WithMany("Contenidos")
-                        .HasForeignKey("LibroISBN")
+                        .HasForeignKey("LibroId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
@@ -271,19 +293,19 @@ namespace Bookflix.Migrations
             modelBuilder.Entity("Bookflix.Models.Libro", b =>
                 {
                     b.HasOne("Bookflix.Models.Autor", "Autor")
-                        .WithMany()
+                        .WithMany("Libros")
                         .HasForeignKey("AutorNombre")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Bookflix.Models.Editorial", "Editorial")
-                        .WithMany()
+                        .WithMany("Libros")
                         .HasForeignKey("EditorialNombre")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Bookflix.Models.Genero", "Genero")
-                        .WithMany()
+                        .WithMany("Libros")
                         .HasForeignKey("GeneroNombre")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -293,28 +315,43 @@ namespace Bookflix.Migrations
                 {
                     b.HasOne("Bookflix.Models.Subscriptor", "Subscriptor")
                         .WithMany("Perfiles")
-                        .HasForeignKey("SubscriptorNombreUsuario")
+                        .HasForeignKey("SubscriptorId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("Bookflix.Models.PerfilLibros", b =>
+                {
+                    b.HasOne("Bookflix.Models.Libro", "Libro")
+                        .WithMany("Lectores")
+                        .HasForeignKey("LibroISBN")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Bookflix.Models.Perfil", "Perfil")
+                        .WithMany("LibrosLeidos")
+                        .HasForeignKey("PerfilId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Bookflix.Models.Reclamo", b =>
                 {
-                    b.HasOne("Bookflix.Models.Perfil", "Creador")
+                    b.HasOne("Bookflix.Models.Perfil", "Perfil")
                         .WithMany()
-                        .HasForeignKey("PerfilNombre")
+                        .HasForeignKey("PerfilId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Bookflix.Models.Reseña", b =>
                 {
-                    b.HasOne("Bookflix.Models.Libro", null)
+                    b.HasOne("Bookflix.Models.Libro", "Libro")
                         .WithMany("Reseñas")
-                        .HasForeignKey("LibroISBN")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("LibroId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
-                    b.HasOne("Bookflix.Models.Perfil", "Creador")
+                    b.HasOne("Bookflix.Models.Perfil", "Perfil")
                         .WithMany()
-                        .HasForeignKey("PerfilNombre")
+                        .HasForeignKey("PerfilId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
@@ -322,7 +359,7 @@ namespace Bookflix.Migrations
                 {
                     b.HasOne("Bookflix.Models.Subscriptor", "Subscriptor")
                         .WithOne("Tarjeta")
-                        .HasForeignKey("Bookflix.Models.Tarjeta", "SubscriptorNombreUsuario")
+                        .HasForeignKey("Bookflix.Models.Tarjeta", "SubscriptorId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 

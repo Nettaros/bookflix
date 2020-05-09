@@ -31,6 +31,7 @@ namespace Bookflix.Models
         public byte[]? Imagen { get; set; }
         public List<Contenido>? Contenidos { get; set; }
         public List<Reseña>? Reseñas { get; set; }
+        public List<PerfilLibros>? Lectores { get; set; }
 #nullable disable
 
 

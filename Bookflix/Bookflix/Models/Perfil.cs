@@ -13,14 +13,17 @@ namespace Bookflix.Models
         [Key]
         [Column(Order = 1)]
         public String Nombre { get; set; }
-        
-        public String SubscriptorNombreUsuario { get; set; }
 
-        [ForeignKey("SubscriptorNombreUsuario")]
         [Column(Order = 2)]
+        public String SubscriptorId { get; set; }
+
+        
         public Subscriptor Subscriptor { get; set; }
+
+        
 #nullable enable
         public byte[]? Imagen { get; set; }
+        public List<PerfilLibros>? LibrosLeidos { get; set; }
 
 #nullable disable
     }

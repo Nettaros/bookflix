@@ -5,21 +5,17 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-
 namespace Bookflix.Models
 {
-    public abstract class Comentario
+    public class PerfilLibros
     {
-        public String Texto { get; set; }
-        [Key]
-        [Column(Order = 1)]
-        public DateTime FechaCreacion { get; set; }
+        public int Id { get; set; }
+        public int LibroISBN { get; set; }
+        public Libro Libro { get; set; }
 
 
         
         public Perfil Perfil { get; set; }
-        [Column(Order = 2)]
-
         public String PerfilId { get; set; }
 
     }

@@ -16,8 +16,7 @@ namespace Bookflix.Models
         [Required]
         public byte CodigoSeguridad { get; set; }
 
-        public String SubscriptorNombreUsuario { get; set; }
-        [ForeignKey("SubscriptorNombreUsuario")]
+        public String SubscriptorId { get; set; }
         public Subscriptor Subscriptor { get; set; }
     }
 }
