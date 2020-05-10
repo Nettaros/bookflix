@@ -42,6 +42,8 @@ namespace Bookflix.Data
             }
         }
 
+        public DbSet<Bookflix.Models.Subscriptor> Subscriptor { get; set; }
+
 
     }
 }
