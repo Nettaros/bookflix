@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Bookflix.Data;
+using Bookflix.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,6 +11,7 @@ namespace Bookflix.Controllers
 {
     public class NovedadesController : Controller
     {
+        private BookflixContext _context = new BookflixContext();
         // GET: Novedad
         public ActionResult Index()
         {
@@ -20,7 +22,12 @@ namespace Bookflix.Controllers
         // GET: Novedad/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            var nov = _context.Novedades.Find(id);
+            if(nov is null)
+            {
+                return RedirectToAction(nameof(NotFoundResult));
+            }
+            return View(nov);
         }
 
         // GET: Novedad/Create
@@ -36,9 +43,19 @@ namespace Bookflix.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
+                if(ModelState.IsValid)
+                {
+                    var nov = new Novedad();
+                    nov.Titulo = collection["Titulo"];
+                    nov.Descripcion = collection["Descripcion"];
+                    nov.Video = collection["Video"];
 
-                return RedirectToAction(nameof(Index));
+                    _context.Novedades.Add(nov);
+                    _context.SaveChanges();
+
+                    return RedirectToAction(nameof(Index));
+                }
+                return View();
             }
             catch
             {
@@ -59,9 +76,24 @@ namespace Bookflix.Controllers
         {
             try
             {
-                // TODO: Add update logic here
+                if(ModelState.IsValid)
+                {
+                    var nov = _context.Novedades.Find(id);
+                    if (nov is null)
+                    {
+                        return RedirectToAction(nameof(NotFoundResult));
+                    }
 
-                return RedirectToAction(nameof(Index));
+                    nov.Titulo = collection["Titulo"];
+                    nov.Descripcion = collection["Descripcion"];
+                    nov.Video = collection["Video"];
+
+                    _context.Novedades.Update(nov);
+                    _context.SaveChanges();
+
+                    return RedirectToAction(nameof(Index));
+                }
+                return View();
             }
             catch
             {
@@ -72,7 +104,12 @@ namespace Bookflix.Controllers
         // GET: Novedad/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            var nov = _context.Novedades.Find(id);
+            if (nov is null)
+            {
+                return RedirectToAction(nameof(NotFoundResult));
+            }
+            return View(nov);
         }
 
         // POST: Novedad/Delete/5
@@ -82,7 +119,14 @@ namespace Bookflix.Controllers
         {
             try
             {
-                // TODO: Add delete logic here
+                var nov = _context.Novedades.Find(id);
+                if(nov is null)
+                {
+                    return RedirectToAction(nameof(NotFoundResult));
+                }
+
+                _context.Novedades.Remove(nov);
+                _context.SaveChanges();
 
                 return RedirectToAction(nameof(Index));
             }
