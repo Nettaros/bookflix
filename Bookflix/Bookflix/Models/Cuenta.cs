@@ -11,15 +11,14 @@ namespace Bookflix.Models
     {
         [Key]
         [Column(Order = 1)]
-        [DataType(DataType.EmailAddress)]
+        [DataType(DataType.EmailAddress, ErrorMessage = "Ingrese un Email valido")]
         [Required(ErrorMessage = "Email requerido")]
         public String Email { get; set; }
 
         [Required(ErrorMessage = "Constraseña requerida")]
         [MinLength(8, ErrorMessage = "La longitud maxima de la contraseña es 8 caracteres")]
-        [RegularExpression(@"^[A-Z0-9a-z""']*$")]
+        [RegularExpression(@"^[A-Z0-9a-z""']*$",ErrorMessage ="La contraseña no debe contener simbolos")]
         [DataType(DataType.Password)]
         public String Contraseña { get; set; }
-
     }
 }

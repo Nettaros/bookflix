@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Bookflix.Data;
 using Bookflix.Models;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 
-
-namespace Bookflix.Controllers
+namespace Bookflix.Views.Usuario
 {
+
     public class UsuarioController : Controller
     {
+        private BookflixContext _context = new BookflixContext();
         // GET: Usuario
         public ActionResult Index()
         {
@@ -26,7 +27,7 @@ namespace Bookflix.Controllers
         }
 
         // GET: Usuario/Create
-        public ActionResult Create()
+        public ActionResult create()
         {
             return View();
         }
@@ -34,17 +35,23 @@ namespace Bookflix.Controllers
         // POST: Usuario/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult create(IFormCollection collection)
         {
+           
             try
             {
-                Subscriptor sus = new Subscriptor();
-                Tarjeta tar = new Tarjeta();
+                var sus = new Subscriptor();
+                var tar = new Tarjeta();
+                sus.Contraseña = collection["Contraseña"];
+                sus.Email = collection["Email"];
                 sus.NombreCompleto = collection["NombreCompleto"];
                 sus.Dni = collection["Dni"];
-                tar.Numero = collection["Numero"];
-                tar.FechaVencimiento = DateTime.Parse(collection["fechaVencimiento"]);
-                
+                tar.Numero = collection["Tarjeta.Numero"];
+                tar.FechaVencimiento = DateTime.Parse(collection["Tarjeta.FechaVencimiento"]);
+                tar.CodigoSeguridad = int.Parse(collection["Tarjeta.CodigoSeguridad"]);
+                sus.Tarjeta= tar;
+                _context.Subscriptores.Add(sus);
+                _context.SaveChanges();
 
                 return RedirectToAction(nameof(Index));
             }
