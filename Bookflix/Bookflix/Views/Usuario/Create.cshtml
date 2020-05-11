@@ -1,0 +1,67 @@
+﻿@model Bookflix.Models.Subscriptor
+
+@{
+    ViewData["Title"] = "create";
+}
+
+<h1>create</h1>
+
+<h4>Subscriptor</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="NombreCompleto" class="control-label"></label>
+                <input asp-for="NombreCompleto" class="form-control" />
+                <span asp-validation-for="NombreCompleto" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Dni" class="control-label"></label>
+                <input asp-for="Dni" class="form-control" />
+                <span asp-validation-for="Dni" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Contraseña" class="control-label"></label>
+                <input asp-for="Contraseña" class="form-control" />
+                <span asp-validation-for="Contraseña" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Tarjeta.Numero" class="control-label"></label>
+                <input asp-for="Tarjeta.Numero" class="form-control" />
+                <span asp-validation-for="Tarjeta.Numero" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Tarjeta.FechaVencimiento" class="control-label"></label>
+                <input asp-for="Tarjeta.FechaVencimiento" class="form-control" />
+                <span asp-validation-for="Tarjeta.FechaVencimiento" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Tarjeta.CodigoSeguridad" class="control-label"></label>
+                <input asp-for="Tarjeta.CodigoSeguridad" class="form-control" />
+                <span asp-validation-for="Tarjeta.CodigoSeguridad" class="text-danger"></span>
+            </div>
+            
+           
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+
+        </form>
+</div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

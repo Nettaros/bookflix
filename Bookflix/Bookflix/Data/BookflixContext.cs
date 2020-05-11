@@ -18,10 +18,11 @@ namespace Bookflix.Data
     {
       
 
-        public DbSet<Cuenta> Cuentas { get; set; }
+        public DbSet<Subscriptor> Subscriptores { get; set; }
+        public DbSet<Admin> Admins { get; set; }
         public DbSet<Libro> Libros { get; set; }
         public DbSet<Reclamo> Reclamos { get; set; }
-
+        public DbSet<Categoria> Categorias { get; set; }
         public DbSet<Genero> Generos { get; set; }
         public DbSet<Editorial> Editoriales { get; set; }
         public DbSet<Autor> Autores { get; set; }
@@ -36,12 +37,12 @@ namespace Bookflix.Data
         {
             base.OnModelCreating(modelBuilder);
             var x = modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys());
-            foreach(var fk in x)
+            foreach (var fk in x)
             {
                 fk.DeleteBehavior = DeleteBehavior.Restrict;
             }
-        }
 
+        }
 
     }
 }
