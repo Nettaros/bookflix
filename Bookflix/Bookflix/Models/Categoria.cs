@@ -11,6 +11,7 @@ namespace Bookflix.Models
         [Key]
         public String Nombre { get; set; }
         public int MaxPerfiles { get; set; }
+        public List<Subscriptor> Subscriptores { get; set; }
 
     }
 }

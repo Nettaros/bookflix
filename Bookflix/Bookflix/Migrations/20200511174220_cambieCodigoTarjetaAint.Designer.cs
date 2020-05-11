@@ -4,14 +4,16 @@ using Bookflix.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Bookflix.Migrations
 {
     [DbContext(typeof(BookflixContext))]
-    partial class BookflixContextModelSnapshot : ModelSnapshot
+    [Migration("20200511174220_cambieCodigoTarjetaAint")]
+    partial class cambieCodigoTarjetaAint
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,7 +55,7 @@ namespace Bookflix.Migrations
 
                     b.HasKey("Nombre");
 
-                    b.ToTable("Categorias");
+                    b.ToTable("Categoria");
                 });
 
             modelBuilder.Entity("Bookflix.Models.Contenido", b =>
@@ -154,16 +156,14 @@ namespace Bookflix.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Descripcion")
-                        .HasColumnType("nvarchar(250)")
-                        .HasMaxLength(250);
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("Imagen")
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Titulo")
                         .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Video")
                         .HasColumnType("nvarchar(max)");
@@ -384,7 +384,7 @@ namespace Bookflix.Migrations
             modelBuilder.Entity("Bookflix.Models.Subscriptor", b =>
                 {
                     b.HasOne("Bookflix.Models.Categoria", "Categoria")
-                        .WithMany("Subscriptores")
+                        .WithMany()
                         .HasForeignKey("CategoriaNombre")
                         .OnDelete(DeleteBehavior.Restrict);
                 });

@@ -51,7 +51,7 @@ namespace Bookflix
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Novedades}/{action=Index}/{id?}");
+                    pattern: "{controller=Usuario}/{action=create}/{id?}");
             });
         }
     }

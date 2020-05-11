@@ -10,12 +10,17 @@ namespace Bookflix.Models
     public class Tarjeta
     {
         [Key]
+        [Required(ErrorMessage = "Numero de tarjeta requerido")]
+        [RegularExpression(@"^[0-9]{16}$", ErrorMessage = "Numero de tarjeta invalido")]
         public String Numero { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Fecha de vencimiento requirido")]
         [DataType(DataType.Date)]
         public DateTime FechaVencimiento { get; set; }
-        [Required]
-        public byte CodigoSeguridad { get; set; }
+
+        [Required(ErrorMessage = "Codigo de seguridadRequerido")]
+        [RegularExpression(@"^[0-9]{3}$",ErrorMessage = "Debe tener exactamente 3 numeros")]
+        public int CodigoSeguridad { get; set; }
 
         public String SubscriptorId { get; set; }
         public Subscriptor Subscriptor { get; set; }
