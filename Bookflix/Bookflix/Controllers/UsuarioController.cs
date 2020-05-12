@@ -7,7 +7,6 @@ using Bookflix.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace Bookflix.Views.Usuario
 {
 
@@ -45,6 +44,7 @@ namespace Bookflix.Views.Usuario
            
             try
             {
+
                 var sus = new Subscriptor();
                 var tar = new Tarjeta();
                 sus.Contraseña = collection["Contraseña"];
@@ -57,6 +57,8 @@ namespace Bookflix.Views.Usuario
                 sus.Tarjeta= tar;
                 _context.Subscriptores.Add(sus);
                 _context.SaveChanges();
+                Session.UserLogged = sus;
+
                 return RedirectToAction(nameof(Index));
             }
             catch
