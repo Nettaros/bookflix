@@ -9,7 +9,11 @@ namespace Bookflix.Models
 {
     public class Tarjeta
     {
+        
         [Key]
+        [Required(ErrorMessage = "DNI requerido")]
+        public String Dni { get; set; }
+        
         [Required(ErrorMessage = "Numero de tarjeta requerido")]
         [RegularExpression(@"^[0-9]{16}$", ErrorMessage = "Numero de tarjeta invalido")]
         public String Numero { get; set; }

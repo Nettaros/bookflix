@@ -1,8 +1,9 @@
-﻿@model Bookflix.Models.Subscriptor
+﻿@model Bookflix.Views.Usuario.DatosCreacionViewModel
 
 @{
     ViewData["Title"] = "create";
 }
+
 
 <h1>create</h1>
 
@@ -13,43 +14,39 @@
         <form asp-action="create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="NombreCompleto" class="control-label"></label>
-                <input asp-for="NombreCompleto" class="form-control" />
-                <span asp-validation-for="NombreCompleto" class="text-danger"></span>
+                <label asp-for="Subscriptor.NombreCompleto" class="control-label"></label>
+                <input asp-for="Subscriptor.NombreCompleto" class="form-control" />
+                <span asp-validation-for="Subscriptor.NombreCompleto" class="text-danger"></span>
+            </div>
+             
+            <div class="form-group">
+                <label asp-for="Subscriptor.Email" class="control-label"></label>
+                <input asp-for="Subscriptor.Email" class="form-control" />
+                <span asp-validation-for="Subscriptor.Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Dni" class="control-label"></label>
-                <input asp-for="Dni" class="form-control" />
-                <span asp-validation-for="Dni" class="text-danger"></span>
+                <label asp-for="Subscriptor.Contraseña" class="control-label"></label>
+                <input asp-for="Subscriptor.Contraseña" class="form-control" />
+                <span asp-validation-for="Subscriptor.Contraseña" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+                <label asp-for="Subscriptor.Tarjeta.Numero" class="control-label"></label>
+                <input asp-for="Subscriptor.Tarjeta.Numero" class="form-control" />
+                <span asp-validation-for="Subscriptor.Tarjeta.Numero" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Contraseña" class="control-label"></label>
-                <input asp-for="Contraseña" class="form-control" />
-                <span asp-validation-for="Contraseña" class="text-danger"></span>
+                <label asp-for="Subscriptor.Tarjeta.FechaVencimiento" class="control-label"></label>
+                <input asp-for="Subscriptor.Tarjeta.FechaVencimiento" class="form-control" />
+                <span asp-validation-for="Subscriptor.Tarjeta.FechaVencimiento" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Tarjeta.Numero" class="control-label"></label>
-                <input asp-for="Tarjeta.Numero" class="form-control" />
-                <span asp-validation-for="Tarjeta.Numero" class="text-danger"></span>
+                <label asp-for="Subscriptor.Tarjeta.CodigoSeguridad" class="control-label"></label>
+                <input asp-for="Subscriptor.Tarjeta.CodigoSeguridad" class="form-control" />
+                <span asp-validation-for="Subscriptor.Tarjeta.CodigoSeguridad" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Tarjeta.FechaVencimiento" class="control-label"></label>
-                <input asp-for="Tarjeta.FechaVencimiento" class="form-control" />
-                <span asp-validation-for="Tarjeta.FechaVencimiento" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Tarjeta.CodigoSeguridad" class="control-label"></label>
-                <input asp-for="Tarjeta.CodigoSeguridad" class="form-control" />
-                <span asp-validation-for="Tarjeta.CodigoSeguridad" class="text-danger"></span>
-            </div>
-            
-           
-
+            @Html.DropDownListFor(m => m.Subscriptor.Categoria,
+              new SelectList(Model.Categorias),
+              "Selecciona una Categoria");
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

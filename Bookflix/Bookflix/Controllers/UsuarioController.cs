@@ -29,8 +29,13 @@ namespace Bookflix.Views.Usuario
         // GET: Usuario/Create
         public ActionResult create()
         {
-            return View();
-        }
+            var CreacionViewModel = new DatosCreacionViewModel()
+            {
+                Categorias = _context.Categorias.ToList(),
+                Subscriptor = new Subscriptor()
+            };
+            return View(CreacionViewModel);
+         }
 
         // POST: Usuario/Create
         [HttpPost]
@@ -45,14 +50,13 @@ namespace Bookflix.Views.Usuario
                 sus.Contraseña = collection["Contraseña"];
                 sus.Email = collection["Email"];
                 sus.NombreCompleto = collection["NombreCompleto"];
-                sus.Dni = collection["Dni"];
+                /*sus.Dni = collection["Dni"]; */
                 tar.Numero = collection["Tarjeta.Numero"];
                 tar.FechaVencimiento = DateTime.Parse(collection["Tarjeta.FechaVencimiento"]);
                 tar.CodigoSeguridad = int.Parse(collection["Tarjeta.CodigoSeguridad"]);
                 sus.Tarjeta= tar;
                 _context.Subscriptores.Add(sus);
                 _context.SaveChanges();
-
                 return RedirectToAction(nameof(Index));
             }
             catch

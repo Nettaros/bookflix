@@ -10,14 +10,12 @@ namespace Bookflix.Models
 {
     public class Subscriptor : Cuenta
     {
+       
         [Required (ErrorMessage = "Nombre completo requerido")]
         [DataType(DataType.Text)]
         public String NombreCompleto { get; set; }
         
-        [Required(ErrorMessage = "DNI requerido")]
-        public String Dni { get; set; }
-        
-        [Required]
+       [Required]
         public Tarjeta Tarjeta { get; set; }
 
         public Categoria Categoria { get; set; }
