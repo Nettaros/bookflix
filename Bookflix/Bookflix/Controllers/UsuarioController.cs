@@ -6,6 +6,8 @@ using Bookflix.Data;
 using Bookflix.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 
 namespace Bookflix.Views.Usuario
 {
@@ -26,7 +28,7 @@ namespace Bookflix.Views.Usuario
         }
 
         // GET: Usuario/Create
-        public ActionResult create()
+        public ActionResult Create()
         {
             var CreacionViewModel = new DatosCreacionViewModel()
             {
@@ -39,9 +41,9 @@ namespace Bookflix.Views.Usuario
         // POST: Usuario/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult create(IFormCollection collection)
+        public ActionResult Create(IFormCollection collection)
         {
-           
+
             try
             {
 
@@ -50,16 +52,41 @@ namespace Bookflix.Views.Usuario
                 sus.Contraseña = collection["Contraseña"];
                 sus.Email = collection["Email"];
                 sus.NombreCompleto = collection["NombreCompleto"];
-                /*sus.Dni = collection["Dni"]; */
+                tar.Dni = collection["Tarjeta.Dni"];
                 tar.Numero = collection["Tarjeta.Numero"];
                 tar.FechaVencimiento = DateTime.Parse(collection["Tarjeta.FechaVencimiento"]);
                 tar.CodigoSeguridad = int.Parse(collection["Tarjeta.CodigoSeguridad"]);
-                sus.Tarjeta= tar;
-                _context.Subscriptores.Add(sus);
-                _context.SaveChanges();
-                Session.UserLogged = sus;
+                sus.Tarjeta = tar;
+                var emailExistente = _context.Subscriptores.Find(collection["Email"]);
+                if (emailExistente is null)
+                {
+                    List<Subscriptor> susList = _context.Subscriptores.ToList();
+                    Boolean encontro = false;
+                    foreach (Subscriptor suscr in susList)
+                        if (suscr.Tarjeta.Dni.Equals(collection["Tarjeta.Dni"]))
+                        {
+                            encontro = true;
+                        }
+                    if (!encontro)
+                    {
+                        _context.Subscriptores.Add(sus);
+                        _context.SaveChanges();
+                        Session.UserLogged = sus;
+                        return View("Inicio"); /*Falta implentar el inicio*/
 
-                return RedirectToAction(nameof(Index));
+                    }
+                    else {
+                        /* Encontro una tarjeta con el mismo dueño */
+                        return RedirectToAction(nameof(Index));
+                    }
+                }
+                else {
+                    /*Encontro el mail en otro lado */
+
+                    return RedirectToAction(nameof(Index));
+
+                }
+
             }
             catch
             {
