@@ -20,6 +20,12 @@ namespace Bookflix.Models
         [DisplayName("Descripcion")]
         public String Descripcion { get; set; }
 
+        [DisplayName("Fecha de Publicación")]
+        public DateTime FechaPublicacion { get; set; }
+
+        [DisplayName("Fecha de Ocultación")]
+        public DateTime? FechaOcultacion { get; set; }
+
 #nullable enable
         [DisplayName("Imagen")]
         public byte[]? Imagen { get; set; }

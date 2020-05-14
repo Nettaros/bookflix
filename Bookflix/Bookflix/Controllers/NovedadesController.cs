@@ -15,7 +15,7 @@ namespace Bookflix.Controllers
         // GET: Novedad
         public ActionResult Index()
         {
-            var novedades = new BookflixContext().Novedades.ToList();
+            var novedades = _context.Novedades.ToList();
             return View(novedades);
         }
 
@@ -65,7 +65,8 @@ namespace Bookflix.Controllers
         // GET: Novedad/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var nov = _context.Novedades.Find(id);
+            return View(nov);
         }
 
         // POST: Novedad/Edit/5
