@@ -21,9 +21,11 @@ namespace Bookflix.Models
         public String Descripcion { get; set; }
 
         [DisplayName("Fecha de Publicación")]
+        [DataType(DataType.Date)]
         public DateTime FechaPublicacion { get; set; }
 
         [DisplayName("Fecha de Ocultación")]
+        [DataType(DataType.Date)]
         public DateTime? FechaOcultacion { get; set; }
 
 #nullable enable
@@ -32,5 +34,10 @@ namespace Bookflix.Models
         [DisplayName("Video")]
         public String? Video { get; set; }
 #nullable disable
+
+        public Novedad()
+        {
+            FechaPublicacion = DateTime.Now;
+        }
     }
 }
