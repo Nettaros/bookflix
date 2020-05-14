@@ -21,10 +21,8 @@ namespace Bookflix.Models
         public Tarjeta Tarjeta { get; set; }
 
         public Categoria Categoria { get; set; }
-#nullable enable
-        public List<Perfil>? Perfiles { get; set; }
 
-       
-#nullable disable
+        public List<Perfil> Perfiles { get; set; }
+
     }
 }

@@ -48,7 +48,6 @@ namespace Bookflix.Controllers
                     var nov = new Novedad();
                     nov.Titulo = collection["Titulo"];
                     nov.Descripcion = collection["Descripcion"];
-                    nov.Video = collection["Video"];
 
                     _context.Novedades.Add(nov);
                     _context.SaveChanges();
@@ -86,7 +85,6 @@ namespace Bookflix.Controllers
 
                     nov.Titulo = collection["Titulo"];
                     nov.Descripcion = collection["Descripcion"];
-                    nov.Video = collection["Video"];
 
                     _context.Novedades.Update(nov);
                     _context.SaveChanges();

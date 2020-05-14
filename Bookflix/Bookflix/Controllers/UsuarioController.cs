@@ -27,15 +27,16 @@ namespace Bookflix.Views.Usuario
         }
 
         // GET: Usuario/Create
-        public ActionResult create()
+        public ActionResult Create()
         {
+            
             return View();
         }
 
         // POST: Usuario/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult create(IFormCollection collection)
+        public ActionResult Create(IFormCollection collection)
         {
            
             try
