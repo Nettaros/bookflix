@@ -4,14 +4,16 @@ using Bookflix.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Bookflix.Migrations
 {
     [DbContext(typeof(BookflixContext))]
-    partial class BookflixContextModelSnapshot : ModelSnapshot
+    [Migration("20200511232110_DatoDeLibroNullableLibros")]
+    partial class DatoDeLibroNullableLibros
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,16 +33,6 @@ namespace Bookflix.Migrations
                     b.HasKey("Email");
 
                     b.ToTable("Admins");
-                });
-
-            modelBuilder.Entity("Bookflix.Models.Autor", b =>
-                {
-                    b.Property<string>("Nombre")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Nombre");
-
-                    b.ToTable("Autores");
                 });
 
             modelBuilder.Entity("Bookflix.Models.Categoria", b =>
@@ -84,24 +76,20 @@ namespace Bookflix.Migrations
                     b.ToTable("Contenido");
                 });
 
-            modelBuilder.Entity("Bookflix.Models.Editorial", b =>
+            modelBuilder.Entity("Bookflix.Models.DatoDeLibro", b =>
                 {
                     b.Property<string>("Nombre")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Nombre");
-
-                    b.ToTable("Editoriales");
-                });
-
-            modelBuilder.Entity("Bookflix.Models.Genero", b =>
-                {
-                    b.Property<string>("Nombre")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Nombre");
 
-                    b.ToTable("Generos");
+                    b.ToTable("DatoDeLibro");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("DatoDeLibro");
                 });
 
             modelBuilder.Entity("Bookflix.Models.Libro", b =>
@@ -157,13 +145,6 @@ namespace Bookflix.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
-
-                    b.Property<DateTime?>("FechaOcultacion")
-                        .IsRequired()
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("FechaPublicacion")
-                        .HasColumnType("datetime2");
 
                     b.Property<byte[]>("Imagen")
                         .HasColumnType("varbinary(max)");
@@ -313,6 +294,27 @@ namespace Bookflix.Migrations
                         .HasFilter("[SubscriptorId] IS NOT NULL");
 
                     b.ToTable("Tarjeta");
+                });
+
+            modelBuilder.Entity("Bookflix.Models.Autor", b =>
+                {
+                    b.HasBaseType("Bookflix.Models.DatoDeLibro");
+
+                    b.HasDiscriminator().HasValue("Autor");
+                });
+
+            modelBuilder.Entity("Bookflix.Models.Editorial", b =>
+                {
+                    b.HasBaseType("Bookflix.Models.DatoDeLibro");
+
+                    b.HasDiscriminator().HasValue("Editorial");
+                });
+
+            modelBuilder.Entity("Bookflix.Models.Genero", b =>
+                {
+                    b.HasBaseType("Bookflix.Models.DatoDeLibro");
+
+                    b.HasDiscriminator().HasValue("Genero");
                 });
 
             modelBuilder.Entity("Bookflix.Models.Contenido", b =>
