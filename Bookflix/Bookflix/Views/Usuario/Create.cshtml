@@ -29,10 +29,11 @@
                 <span asp-validation-for="Subscriptor.Contraseña" class="text-danger"></span>
             </div>
             <h7>Tipo de cuenta</h7>
-            @Html.DropDownListFor(m => m.Subscriptor.Categoria,
-              new SelectList(Model.Categorias),
-             "Selecciona una Categoria");
-            <hr />
+            <div class="form-group">
+                <label asp-for="quieroSerPremium" class="control-label"></label>
+                <input asp-for="quieroSerPremium" class="form-control" />
+            </div>           
+            
             <h4>Datos de la tarjeta</h4>
             <div class="form-group">
                 <label asp-for="Subscriptor.Tarjeta.Dni" class="control-label"></label>
