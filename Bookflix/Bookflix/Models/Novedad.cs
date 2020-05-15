@@ -24,6 +24,7 @@ namespace Bookflix.Models
         [DataType(DataType.Date)]
         public DateTime FechaPublicacion { get; set; }
 
+        [Required(ErrorMessage = "Una Fecha de Ocultación es Requerida")]
         [DisplayName("Fecha de Ocultación")]
         [DataType(DataType.Date)]
         public DateTime? FechaOcultacion { get; set; }
