@@ -1,0 +1,73 @@
+﻿@model Bookflix.Views.Usuario.DatosCreacionViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+<h1>Únete a Bookflix</h1>
+
+<h4>Ingrese los siguientes datos</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Subscriptor.NombreCompleto" class="control-label"></label>
+                <input asp-for="Subscriptor.NombreCompleto" class="form-control" />
+                <span asp-validation-for="Subscriptor.NombreCompleto" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Subscriptor.Email" class="control-label"></label>
+                <input asp-for="Subscriptor.Email" class="form-control" />
+                <span asp-validation-for="Subscriptor.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Subscriptor.Contraseña" class="control-label"></label>
+                <input asp-for="Subscriptor.Contraseña" class="form-control" />
+                <span asp-validation-for="Subscriptor.Contraseña" class="text-danger"></span>
+            </div>
+            <h7>Tipo de cuenta</h7>
+            <div class="form-group">
+                <label asp-for="quieroSerPremium" class="control-label"></label>
+                <input asp-for="quieroSerPremium" class="form-control" />
+            </div>           
+            
+            <h4>Datos de la tarjeta</h4>
+            <div class="form-group">
+                <label asp-for="Subscriptor.Tarjeta.Dni" class="control-label"></label>
+                <input asp-for="Subscriptor.Tarjeta.Dni" class="form-control" />
+                <span asp-validation-for="Subscriptor.Tarjeta.Dni" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Subscriptor.Tarjeta.Numero" class="control-label"></label>
+                <input asp-for="Subscriptor.Tarjeta.Numero" class="form-control" />
+                <span asp-validation-for="Subscriptor.Tarjeta.Numero" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Subscriptor.Tarjeta.FechaVencimiento" class="control-label"></label>
+                <input asp-for="Subscriptor.Tarjeta.FechaVencimiento" class="form-control" />
+                <span asp-validation-for="Subscriptor.Tarjeta.FechaVencimiento" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Subscriptor.Tarjeta.CodigoSeguridad" class="control-label"></label>
+                <input asp-for="Subscriptor.Tarjeta.CodigoSeguridad" class="form-control" />
+                <span asp-validation-for="Subscriptor.Tarjeta.CodigoSeguridad" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Registrarse" class="btn btn-primary" />
+            </div>
+
+        </form>
+</div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

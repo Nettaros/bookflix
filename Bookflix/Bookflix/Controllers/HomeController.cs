@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Bookflix.Models;
+using Bookflix.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bookflix.Controllers
 {
@@ -20,6 +22,7 @@ namespace Bookflix.Controllers
 
         public IActionResult Index()
         {
+            
             return View();
         }
 
