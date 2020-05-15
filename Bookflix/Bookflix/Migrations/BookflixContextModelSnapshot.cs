@@ -277,6 +277,10 @@ namespace Bookflix.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Dni")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("NombreCompleto")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -290,7 +294,7 @@ namespace Bookflix.Migrations
 
             modelBuilder.Entity("Bookflix.Models.Tarjeta", b =>
                 {
-                    b.Property<string>("Dni")
+                    b.Property<string>("Numero")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("CodigoSeguridad")
@@ -299,14 +303,10 @@ namespace Bookflix.Migrations
                     b.Property<DateTime>("FechaVencimiento")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Numero")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("SubscriptorId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Dni");
+                    b.HasKey("Numero");
 
                     b.HasIndex("SubscriptorId")
                         .IsUnique()
