@@ -4,14 +4,16 @@ using Bookflix.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Bookflix.Migrations
 {
     [DbContext(typeof(BookflixContext))]
-    partial class BookflixContextModelSnapshot : ModelSnapshot
+    [Migration("20200514193708_NovedadConFechas")]
+    partial class NovedadConFechas
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,7 +161,6 @@ namespace Bookflix.Migrations
                         .HasMaxLength(250);
 
                     b.Property<DateTime?>("FechaOcultacion")
-                        .IsRequired()
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("FechaPublicacion")
@@ -277,6 +278,10 @@ namespace Bookflix.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Dni")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("NombreCompleto")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -290,7 +295,7 @@ namespace Bookflix.Migrations
 
             modelBuilder.Entity("Bookflix.Models.Tarjeta", b =>
                 {
-                    b.Property<string>("Dni")
+                    b.Property<string>("Numero")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("CodigoSeguridad")
@@ -299,14 +304,10 @@ namespace Bookflix.Migrations
                     b.Property<DateTime>("FechaVencimiento")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Numero")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("SubscriptorId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Dni");
+                    b.HasKey("Numero");
 
                     b.HasIndex("SubscriptorId")
                         .IsUnique()

@@ -6,29 +6,51 @@ using Bookflix.Data;
 using Bookflix.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bookflix.Controllers
 {
     public class NovedadesController : Controller
     {
-        private BookflixContext _context = new BookflixContext();
+        private BookflixContext _context;
+        public NovedadesController()
+        {
+            _context = new BookflixContext();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _context.Dispose();
+            base.Dispose(disposing);
+        }
+
         // GET: Novedad
         public ActionResult Index()
         {
-            var novedades = new BookflixContext().Novedades.ToList();
+            var novedades = _context.Novedades.ToList();
             return View(novedades);
         }
 
         // GET: Novedad/Details/5
-        public ActionResult Details(int id)
+        public async Task<IActionResult> Details(int? id)
         {
-            var nov = _context.Novedades.Find(id);
-            if(nov is null)
+            if (id == null)
             {
-                return RedirectToAction(nameof(NotFoundResult));
+                return NotFound();
             }
+
+            var nov = await _context.Novedades.AsNoTracking().FirstOrDefaultAsync(m => m.Id == id);
+
+            if (nov == null)
+            {
+                return NotFound();
+            }
+
             return View(nov);
         }
+
+          
+
 
         // GET: Novedad/Create
         public ActionResult Create()
@@ -39,100 +61,112 @@ namespace Bookflix.Controllers
         // POST: Novedad/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create( 
+            [Bind("Titulo,Descripcion,FechaOcultacion")] Novedad novedad)
         {
             try
             {
                 if(ModelState.IsValid)
                 {
-                    var nov = new Novedad();
-                    nov.Titulo = collection["Titulo"];
-                    nov.Descripcion = collection["Descripcion"];
-                    nov.Video = collection["Video"];
-
-                    _context.Novedades.Add(nov);
-                    _context.SaveChanges();
+                    _context.Add(novedad);
+                    await _context.SaveChangesAsync();
 
                     return RedirectToAction(nameof(Index));
                 }
                 return View();
             }
-            catch
+            catch (DbUpdateException ex )
             {
-                return View();
+                //Log the error (uncomment ex variable name and write a log.
+                ModelState.AddModelError("", "No se pudieron realizar los cambios. " +
+                    "Intenta nuevamente, y si el problema persiste " +
+                    "habla con el administrador del sistema.");
             }
+            return View(novedad);
         }
 
         // GET: Novedad/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            return View();
+            var nov = await _context.Novedades.FirstOrDefaultAsync(s => s.Id == id);
+            return View(nov);
         }
 
         // POST: Novedad/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(int? id)
         {
-            try
+            if (id == null)
             {
-                if(ModelState.IsValid)
-                {
-                    var nov = _context.Novedades.Find(id);
-                    if (nov is null)
-                    {
-                        return RedirectToAction(nameof(NotFoundResult));
-                    }
-
-                    nov.Titulo = collection["Titulo"];
-                    nov.Descripcion = collection["Descripcion"];
-                    nov.Video = collection["Video"];
-
-                    _context.Novedades.Update(nov);
-                    _context.SaveChanges();
-
+                return NotFound();
+            }
+            var nuevaNovedad = await _context.Novedades.FirstOrDefaultAsync(s => s.Id == id);
+            if (await TryUpdateModelAsync<Novedad>(nuevaNovedad, "",
+                s => s.Titulo, s => s.Descripcion, s => s.FechaOcultacion))
+            {
+                try
+                {   
+                    await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
-                return View();
+                catch (DbUpdateException ex )
+                {
+                    //Log the error (uncomment ex variable name and write a log.)
+                    ModelState.AddModelError("", "Imposible realizar cambios. " +
+                        "Intentalo Nuevamente, y si el problema persiste, " +
+                        "habla con el administrador del sistema.");
+                }
             }
-            catch
-            {
-                return View();
-            }
+            return View(nuevaNovedad);
         }
 
         // GET: Novedad/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int? id, bool? saveChangesError = false)
         {
-            var nov = _context.Novedades.Find(id);
-            if (nov is null)
+            if (id == null)
             {
-                return RedirectToAction(nameof(NotFoundResult));
+                return NotFound();
             }
-            return View(nov);
+
+            var novedad = await _context.Novedades
+                .AsNoTracking()
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (novedad == null)
+            {
+                return NotFound();
+            }
+
+            if (saveChangesError.GetValueOrDefault())
+            {
+                ViewData["ErrorMessage"] =
+                    "Borrado fallido. Intentalo Nuevamente, y si el problema persiste , habla con el administrador del sistema.";
+            }
+
+            return View(novedad);
         }
 
         // POST: Novedad/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            try
+            var novedad = await _context.Novedades.FindAsync(id);
+            if (novedad == null)
             {
-                var nov = _context.Novedades.Find(id);
-                if(nov is null)
-                {
-                    return RedirectToAction(nameof(NotFoundResult));
-                }
-
-                _context.Novedades.Remove(nov);
-                _context.SaveChanges();
-
                 return RedirectToAction(nameof(Index));
             }
-            catch
+
+            try
             {
-                return View();
+                _context.Novedades.Remove(novedad);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException  ex )
+            {
+                //Log the error (uncomment ex variable name and write a log.)
+                return RedirectToAction(nameof(Delete), new { id = id, saveChangesError = true });
             }
         }
     }
