@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Bookflix.Models.Novedad>
+
+@{
+    ViewData["Title"] = "MostrarNovedades";
+}
+
+@if (Model.ToList().Count > 0)
+{
+    <div style="line-height:5px;">
+        @foreach (var item in Model)
+        {
+            <ul>
+                <li>
+                    @Html.DisplayFor(modelItem => item.Titulo): @Html.DisplayFor(modelItem => item.Descripcion)
+                </li>
+            </ul>
+        }
+    </div>
+}
+else
+{
+    <p>
+        No hay Novedades cargadas.
+    </p>
+}
