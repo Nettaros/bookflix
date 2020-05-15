@@ -10,6 +10,9 @@ namespace Bookflix.Models
     {
         [Key]
         public String Nombre { get; set; }
-        public List<Libro> Libros { get; set; }
+#nullable enable
+        public List<Libro>? Libros { get; set; }
+#nullable disable
+
     }
 }

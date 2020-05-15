@@ -15,14 +15,30 @@ namespace Bookflix.Models
         [DisplayName("Titulo")]
         public String Titulo { get; set; }
 
-#nullable enable
+        [Required(ErrorMessage = "Descripción requerida")]
         [StringLength(250, ErrorMessage = "La longitud maxima de la descripcion es 250 caracteres")]
         [DisplayName("Descripcion")]
-        public String? Descripcion { get; set; }
+        public String Descripcion { get; set; }
+
+        [DisplayName("Fecha de Publicación")]
+        [DataType(DataType.Date)]
+        public DateTime FechaPublicacion { get; set; }
+
+        [Required(ErrorMessage = "Una Fecha de Ocultación es Requerida")]
+        [DisplayName("Fecha de Ocultación")]
+        [DataType(DataType.Date)]
+        public DateTime? FechaOcultacion { get; set; }
+
+#nullable enable
         [DisplayName("Imagen")]
         public byte[]? Imagen { get; set; }
         [DisplayName("Video")]
         public String? Video { get; set; }
 #nullable disable
+
+        public Novedad()
+        {
+            FechaPublicacion = DateTime.Now;
+        }
     }
 }
