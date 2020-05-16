@@ -54,9 +54,6 @@ namespace Bookflix.Controllers
             return View(nov);
         }
 
-          
-
-
         // GET: Novedad/Create
         public ActionResult Create()
         {
@@ -152,7 +149,7 @@ namespace Bookflix.Controllers
         }
 
         // POST: Novedad/Delete/5
-        [HttpPost]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

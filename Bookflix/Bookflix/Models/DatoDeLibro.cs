@@ -14,5 +14,13 @@ namespace Bookflix.Models
         public List<Libro>? Libros { get; set; }
 #nullable disable
 
+        public void AgregarOCrear(Libro libro)
+        {
+            if(Libros is null)
+            {
+                Libros = new List<Libro>();
+            }
+            Libros.Add(libro);
+        }
     }
 }

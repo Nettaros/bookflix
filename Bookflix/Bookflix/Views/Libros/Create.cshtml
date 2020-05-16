@@ -1,0 +1,68 @@
+﻿@model Bookflix.Views.Libros.DatoDeLibroViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Cargar Metadatos</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Libro.ISBN" class="control-label"></label>
+                <input asp-for="Libro.ISBN" class="form-control" />
+                <span asp-validation-for="Libro.ISBN" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Libro.Titulo" class="control-label"></label>
+                <input asp-for="Libro.Titulo" class="form-control" />
+                <span asp-validation-for="Libro.Titulo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Libro.FechaPublicacion" class="control-label"></label>
+                <input asp-for="Libro.FechaPublicacion" class="form-control" />
+                <span asp-validation-for="Libro.FechaPublicacion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Libro.Sinopsis" class="control-label"></label>
+                <textarea asp-for="Libro.Sinopsis" class="form-control" />@Model.Libro.Sinopsis</textarea>
+                <span asp-validation-for="Libro.Sinopsis" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Editorial" class="control-label"></label>
+                <select asp-for="Editorial" asp-items="@Model.Editoriales" class="custom-select">
+                    <option>Seleccione una Editorial</option>
+                </select>
+                <span asp-validation-for="Editorial" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Autor" class="control-label"></label>
+                <select asp-for="Autor" asp-items="@Model.Autores" class="custom-select">
+                    <option>Seleccione un Autor</option>
+                </select>
+                <span asp-validation-for="Autor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Genero" class="control-label"></label>
+                <select asp-for="Genero" asp-items="@Model.Generos" class="custom-select">
+                    <option>Seleccione un Genero</option>
+                </select>
+                <span asp-validation-for="Genero" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Cargar Metadatos" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Volver a la lista</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

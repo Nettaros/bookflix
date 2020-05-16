@@ -6,6 +6,8 @@ using System.Drawing;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using System.ComponentModel;
+using Bookflix.Models.Validacion;
 
 namespace Bookflix.Models
 {
@@ -14,19 +16,27 @@ namespace Bookflix.Models
         
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Key]
+        [Required(ErrorMessage = "ISBN Requerido")]
+        [ISBNRepetido]
         public int ISBN { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Titulo Requerido")]
         public String Titulo { get; set; }
-        [Required]    
+
+           
         public Editorial Editorial { get; set; }
-        [Required]
+
+      
         public Autor Autor { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Fecha de Publicacion Requerida")]
         [DataType(DataType.Date)]
+        [DisplayName("Fecha de Publicacion")]
         public DateTime FechaPublicacion { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Sinopsis Requerida")]
         public String Sinopsis { get; set; }
-        [Required]
+
         public Genero Genero { get; set; }
 #nullable enable
         public byte[]? Imagen { get; set; }
