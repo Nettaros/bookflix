@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.ComponentModel;
+using Bookflix.Models.Validacion;
 
 namespace Bookflix.Models
 {
@@ -16,6 +17,7 @@ namespace Bookflix.Models
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Key]
         [Required(ErrorMessage = "ISBN Requerido")]
+        [ISBNRepetido]
         public int ISBN { get; set; }
 
         [Required(ErrorMessage = "Titulo Requerido")]

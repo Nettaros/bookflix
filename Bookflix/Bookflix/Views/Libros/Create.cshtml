@@ -28,7 +28,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Libro.Sinopsis" class="control-label"></label>
-                <textarea asp-for="Libro.Sinopsis" class="form-control" /></textarea>
+                <textarea asp-for="Libro.Sinopsis" class="form-control" />@Model.Libro.Sinopsis</textarea>
                 <span asp-validation-for="Libro.Sinopsis" class="text-danger"></span>
             </div>
             <div class="form-group">

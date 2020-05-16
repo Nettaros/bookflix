@@ -32,7 +32,7 @@ namespace Bookflix.Controllers
         // GET: Libros
         public ActionResult Index()
         {
-            var libros = _context.Libros.ToList();
+            var libros = _context.Libros.Include(l => l.Genero).Include(l => l.Autor).Include(l => l.Editorial).ToList();
             return View(libros);
         }
 
