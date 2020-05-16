@@ -24,6 +24,11 @@ namespace Bookflix.Controllers
             base.Dispose(disposing);
         }
 
+        public ActionResult MostrarNovedades()
+        {
+            return View(_context.Novedades.ToList());
+        }
+
         // GET: Novedad
         public ActionResult Index()
         {

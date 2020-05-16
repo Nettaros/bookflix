@@ -1,0 +1,15 @@
+﻿@model Bookflix.Data.BookflixContext
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Campo de pruebas</h1>
+
+<div>
+    <partial name="_MostrarNovedades" model=@Model.Novedades.ToList()>
+</div>
+
+<div>
+    <a asp-action="Index">Volver a la lista</a>
+</div>
+
