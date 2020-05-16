@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Bookflix.Models;
@@ -9,9 +10,19 @@ namespace Bookflix.Views.Libros
 {
     public class DatoDeLibroViewModel
     {
-        public IEnumerable<Genero> Generos { get; set; }
-        public IEnumerable<Autor> Autores { get; set; }
-        public IEnumerable<Editorial> Editoriales { get; set; }
+
+        [Required(ErrorMessage = "Genero Requerido")]
+        public String Genero { get; set; }
+        public SelectList Generos { get; set; }
+
+        [Required(ErrorMessage = "Autor Requerido")]
+        public String Autor { get; set; }
+
+        public SelectList Autores { get; set; }
+
+        [Required(ErrorMessage = "Editorial Requerida")]
+        public String Editorial { get; set; }
+        public SelectList Editoriales { get; set; }
         public Libro Libro { get; set; }
     }
 }

@@ -16,8 +16,10 @@ namespace Bookflix.Controllers
     public class LibrosController : Controller
     {
         BookflixContext _context;
+        DatoDeLibroViewModel vm;
         public LibrosController()
         {
+            vm = new DatoDeLibroViewModel();
             _context = new BookflixContext();
         }
 
@@ -30,7 +32,8 @@ namespace Bookflix.Controllers
         // GET: Libros
         public ActionResult Index()
         {
-            return View();
+            var libros = _context.Libros.ToList();
+            return View(libros);
         }
 
         // GET: Libros/Details/5
@@ -42,11 +45,7 @@ namespace Bookflix.Controllers
         // GET: Libros/Create
         public ActionResult Create()
         {
-            var vm = new DatoDeLibroViewModel();
-            vm.Generos = _context.Generos.ToList();
-            vm.Autores = _context.Autores.ToList();
-            vm.Editoriales = _context.Editoriales.ToList();
-            vm.Libro = new Libro();
+            vm = CargarVM(new Libro());
             return View(vm);
         }
 
@@ -55,16 +54,20 @@ namespace Bookflix.Controllers
         // POST: Libros/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(
-            [Bind("ISBN,Titulo,FechaPublicacion,Sinopsis")] Libro libro)
+        public async Task<IActionResult> Create(DatoDeLibroViewModel model)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    _context.Add(libro);
-                    await _context.SaveChangesAsync();
-
+                    var gen = _context.Generos.SingleOrDefault(g => g.Nombre == model.Genero);
+                    var aut = _context.Autores.SingleOrDefault(g => g.Nombre == model.Autor);
+                    var edi = _context.Editoriales.SingleOrDefault(g => g.Nombre == model.Editorial);
+                    gen.AgregarOCrear(model.Libro);
+                    aut.AgregarOCrear(model.Libro);
+                    edi.AgregarOCrear(model.Libro);
+                    _context.SaveChanges();
+                    
                     return RedirectToAction(nameof(Index));
                 }
             }
@@ -75,7 +78,8 @@ namespace Bookflix.Controllers
                     "Intenta nuevamente, y si el problema persiste " +
                     "habla con el administrador del sistema.");
             }
-            return View(libro);
+            vm = CargarVM(model.Libro);
+            return View(vm);
         }
 
         // GET: Libros/Edit/5
@@ -122,6 +126,18 @@ namespace Bookflix.Controllers
             {
                 return View();
             }
+        }
+
+        private DatoDeLibroViewModel CargarVM(Libro libro)
+        {
+            IEnumerable<Genero> gen = _context.Generos.ToList();
+            IEnumerable<Autor> aut = _context.Autores.ToList();
+            IEnumerable<Editorial> edi = _context.Editoriales.ToList();
+            vm.Generos = new SelectList(gen, "Nombre", "Nombre");
+            vm.Autores = new SelectList(aut, "Nombre", "Nombre");
+            vm.Editoriales = new SelectList(edi, "Nombre", "Nombre");
+            vm.Libro = libro;
+            return vm;
         }
     }
 }

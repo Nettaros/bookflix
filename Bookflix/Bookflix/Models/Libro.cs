@@ -21,13 +21,13 @@ namespace Bookflix.Models
         [Required(ErrorMessage = "Titulo Requerido")]
         public String Titulo { get; set; }
 
-        [Required(ErrorMessage = "Editorial Requerida")]    
+           
         public Editorial Editorial { get; set; }
 
-        [Required(ErrorMessage = "Autor Requerido")]
+      
         public Autor Autor { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Fecha de Publicacion Requerida")]
         [DataType(DataType.Date)]
         [DisplayName("Fecha de Publicacion")]
         public DateTime FechaPublicacion { get; set; }
@@ -35,7 +35,6 @@ namespace Bookflix.Models
         [Required(ErrorMessage = "Sinopsis Requerida")]
         public String Sinopsis { get; set; }
 
-        [Required(ErrorMessage = "Genero Requerido")]
         public Genero Genero { get; set; }
 #nullable enable
         public byte[]? Imagen { get; set; }
